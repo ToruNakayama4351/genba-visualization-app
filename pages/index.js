@@ -66,13 +66,25 @@ export default function ChartGeneratorApp() {
   };
 
 const extractFieldsFromJson = (jsonString) => {
-  console.log('JSON処理を開始:', jsonString);
+  console.log('JSON処理を開始:', jsonString);  // これは有効にする
   
   if (!jsonString || jsonString.trim() === '') {
-    // setExtractedFields([]);  // コメントアウト
-    // setIsExtracting(false);  // コメントアウト
+    // setExtractedFields([]);  // コメントアウトのまま
+    // setIsExtracting(false);  // コメントアウトのまま
     return;
   }
+  
+  // setIsExtracting(true);  // コメントアウトのまま
+  
+  try {
+    const parsed = JSON.parse(jsonString);
+    console.log('JSON解析成功:', parsed);  // これも有効にする
+    
+    // 以下は全てコメントアウトのまま
+  } catch (error) {
+    console.error('JSON解析エラー:', error);  // これも有効にする
+  }
+};
   
   // setIsExtracting(true);  // コメントアウト
   
