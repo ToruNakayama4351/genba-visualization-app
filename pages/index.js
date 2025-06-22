@@ -66,25 +66,45 @@ export default function ChartGeneratorApp() {
   };
 
 const extractFieldsFromJson = (jsonString) => {
-  console.log('JSON処理を開始:', jsonString);  // これは有効にする
+  console.log('JSON処理を開始:', jsonString);
   
   if (!jsonString || jsonString.trim() === '') {
-    // setExtractedFields([]);  // コメントアウトのまま
-    // setIsExtracting(false);  // コメントアウトのまま
+    setExtractedFields([]);      // コメントアウトを外す
+    setIsExtracting(false);      // コメントアウトを外す
     return;
   }
   
-  // setIsExtracting(true);  // コメントアウトのまま
+  setIsExtracting(true);         // コメントアウトを外す
   
   try {
     const parsed = JSON.parse(jsonString);
-    console.log('JSON解析成功:', parsed);  // これも有効にする
+    console.log('JSON解析成功:', parsed);
     
-    // 以下は全てコメントアウトのまま
+    // 実際のJSONから項目を抽出
+    const fields = [];
+    
+    // ミライのゲンバ帳票形式の場合
+    if (parsed.format && parsed.format.boxes) {
+      parsed.format.boxes.forEach(box => {
+        if (box.name && box.dataType) {
+          fields.push({
+            id: box.fieldID || box.name.replace(/[^a-zA-Z0-9]/g, '_'),
+            name: box.name,
+            type: box.dataType === 'string' ? 'string' : 'number'
+          });
+        }
+      });
+    }
+    
+    setExtractedFields(fields);  // コメントアウトを外す
+    setIsExtracting(false);      // コメントアウトを外す
+    
   } catch (error) {
-    console.error('JSON解析エラー:', error);  // これも有効にする
+    console.error('JSON解析エラー:', error);
+    setExtractedFields([]);      // コメントアウトを外す
+    setIsExtracting(false);      // コメントアウトを外す
   }
-};      
+}; 
 
   // データ型推定の強化
   const inferDataType = (fieldName, originalType) => {
