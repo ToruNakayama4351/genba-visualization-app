@@ -65,26 +65,33 @@ export default function ChartGeneratorApp() {
     }
   };
 
-  const extractFieldsFromJson = (jsonString) => {
-    setIsExtracting(true);
-    try {
-      const parsed = JSON.parse(jsonString);
-      const fields = [];
-      
-      // ミライのゲンバ帳票形式の場合
-      if (parsed.format && parsed.format.boxes) {
-        // boxesから項目を抽出
-        parsed.format.boxes.forEach(box => {
-          if (box.name && box.dataType) {
-            let type = inferDataType(box.name, box.dataType);
-            
-            fields.push({
-              id: box.fieldID || box.name.replace(/[^a-zA-Z0-9]/g, '_'),
-              name: box.name,
-              type: type
-            });
-          }
-        });
+const extractFieldsFromJson = (jsonString) => {
+  // ガード句を追加
+  if (!jsonString || jsonString.trim() === '') {
+    setExtractedFields([]);
+    setIsExtracting(false);
+    return;
+  }
+  
+  setIsExtracting(true);
+  try {
+    const parsed = JSON.parse(jsonString);
+    const fields = [];
+    
+    // ミライのゲンバ帳票形式の場合
+    if (parsed.format && parsed.format.boxes) {
+      // boxesから項目を抽出
+      parsed.format.boxes.forEach(box => {
+        if (box.name && box.dataType) {
+          let type = inferDataType(box.name, box.dataType);
+          
+          fields.push({
+            id: box.fieldID || box.name.replace(/[^a-zA-Z0-9]/g, '_'),
+            name: box.name,
+            type: type
+          });
+        }
+      });
         
         // tablesからカラム項目を抽出
         if (parsed.format.tables) {
@@ -164,12 +171,12 @@ export default function ChartGeneratorApp() {
     }
   };
 
-  const handleJsonTextChange = (value) => {
-    setJsonData(value);
-    if (value.trim()) {
-      extractFieldsFromJson(value);
-    }
-  };
+const handleJsonTextChange = (value) => {
+  setJsonData(value);
+  if (value.trim() && value !== jsonData) {
+    extractFieldsFromJson(value);
+  }
+};
 
   const addCustomField = () => {
     if (newField.name.trim()) {
