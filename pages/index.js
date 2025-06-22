@@ -53,37 +53,31 @@ export default function ChartGeneratorApp() {
     }
   };
 
-  const handleJsonFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setJsonData(e.target.result);
-        extractFieldsFromJson(e.target.result);
-      };
-      reader.readAsText(file);
-    }
-  };
+const handleJsonFileUpload = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setJsonData(e.target.result);
+      // extractFieldsFromJson(e.target.result); // この行をコメントアウト
+    };
+    reader.readAsText(file);
+  }
+};
 
 const extractFieldsFromJson = (jsonString) => {
   console.log('JSON処理を開始:', jsonString);
   
   if (!jsonString || jsonString.trim() === '') {
-    setExtractedFields([]);      // コメントアウトを外す
-    setIsExtracting(false);      // コメントアウトを外す
     return;
   }
-  
-  setIsExtracting(true);         // コメントアウトを外す
   
   try {
     const parsed = JSON.parse(jsonString);
     console.log('JSON解析成功:', parsed);
     
-    // 実際のJSONから項目を抽出
     const fields = [];
     
-    // ミライのゲンバ帳票形式の場合
     if (parsed.format && parsed.format.boxes) {
       parsed.format.boxes.forEach(box => {
         if (box.name && box.dataType) {
@@ -96,15 +90,18 @@ const extractFieldsFromJson = (jsonString) => {
       });
     }
     
-    setExtractedFields(fields);  // コメントアウトを外す
-    setIsExtracting(false);      // コメントアウトを外す
+    console.log('抽出された項目:', fields);
+    
+    // 一度だけ更新するために setTimeout を使用
+    setTimeout(() => {
+      setExtractedFields(fields);
+      setIsExtracting(false);
+    }, 0);
     
   } catch (error) {
     console.error('JSON解析エラー:', error);
-    setExtractedFields([]);      // コメントアウトを外す
-    setIsExtracting(false);      // コメントアウトを外す
   }
-}; 
+};
 
   // データ型推定の強化
   const inferDataType = (fieldName, originalType) => {
