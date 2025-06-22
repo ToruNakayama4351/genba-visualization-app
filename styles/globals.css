@@ -12,28 +12,63 @@ body {
   box-sizing: border-box;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+/* メインコンテナ */
+.min-h-screen {
+  min-height: 100vh;
   padding: 20px;
 }
 
+.max-w-7xl {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 /* ヘッダー */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
 h1 {
   color: white;
-  text-align: center;
   font-size: 2.5rem;
   margin-bottom: 10px;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
+header p {
+  color: rgba(255,255,255,0.9);
+  font-size: 1.1rem;
+}
+
+/* ナビゲーション */
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.gap-4 {
+  gap: 16px;
+}
+
+.items-center {
+  align-items: center;
+}
+
 /* カード */
-.card {
+.bg-white {
   background: white;
   border-radius: 15px;
   padding: 30px;
   margin: 20px 0;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.space-y-8 > * + * {
+  margin-top: 32px;
 }
 
 /* ボタン */
@@ -47,6 +82,9 @@ button {
   font-size: 16px;
   margin: 5px;
   transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 button:hover {
@@ -55,23 +93,13 @@ button:hover {
   box-shadow: 0 5px 15px rgba(0,123,255,0.3);
 }
 
-/* 入力フィールド */
-input, textarea {
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 16px;
-  width: 100%;
-  margin: 5px 0;
-  transition: border-color 0.3s ease;
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
 }
 
-input:focus, textarea:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-/* ナビゲーションボタン */
+/* ナビゲーションボタン特別スタイル */
 .nav-button {
   background: rgba(255,255,255,0.9);
   color: #333;
@@ -81,4 +109,85 @@ input:focus, textarea:focus {
 .nav-button.active {
   background: #007bff;
   color: white;
+}
+
+/* 入力フィールド */
+input, textarea, select {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  width: 100%;
+  margin: 5px 0;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* セクション見出し */
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* グリッドレイアウト */
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.md\:grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.gap-4 {
+  gap: 16px;
+}
+
+/* レスポンシブ対応 */
+@media (min-width: 768px) {
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* その他のユーティリティ */
+.text-center {
+  text-align: center;
+}
+
+.mb-4 {
+  margin-bottom: 16px;
+}
+
+.p-4 {
+  padding: 16px;
+}
+
+.border {
+  border: 1px solid #e0e0e0;
+}
+
+.rounded-lg {
+  border-radius: 8px;
+}
+
+.hover\:bg-gray-50:hover {
+  background-color: #f9fafb;
 }
