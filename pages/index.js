@@ -66,6 +66,9 @@ export default function ChartGeneratorApp() {
   };
 
 const extractFieldsFromJson = (jsonString) => {
+  // 一時的に処理を停止
+  console.log('JSON処理を開始:', jsonString);
+  
   // ガード句を追加
   if (!jsonString || jsonString.trim() === '') {
     setExtractedFields([]);
@@ -74,24 +77,26 @@ const extractFieldsFromJson = (jsonString) => {
   }
   
   setIsExtracting(true);
+  
   try {
     const parsed = JSON.parse(jsonString);
-    const fields = [];
+    console.log('JSON解析成功:', parsed);
     
-    // ミライのゲンバ帳票形式の場合
-    if (parsed.format && parsed.format.boxes) {
-      // boxesから項目を抽出
-      parsed.format.boxes.forEach(box => {
-        if (box.name && box.dataType) {
-          let type = inferDataType(box.name, box.dataType);
-          
-          fields.push({
-            id: box.fieldID || box.name.replace(/[^a-zA-Z0-9]/g, '_'),
-            name: box.name,
-            type: type
-          });
-        }
-      });
+    // 一時的に簡単な処理のみ
+    const fields = [
+      { id: 'test1', name: 'テスト項目1', type: 'string' },
+      { id: 'test2', name: 'テスト項目2', type: 'number' }
+    ];
+    
+    setExtractedFields(fields);
+    setIsExtracting(false);
+    
+  } catch (error) {
+    console.error('JSON解析エラー:', error);
+    setExtractedFields([]);
+    setIsExtracting(false);
+  }
+};
         
         // tablesからカラム項目を抽出
         if (parsed.format.tables) {
