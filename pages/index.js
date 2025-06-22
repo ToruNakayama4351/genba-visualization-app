@@ -91,13 +91,9 @@ const extractFieldsFromJson = (jsonString) => {
     }
     
     console.log('抽出された項目:', fields);
-    
-    // 一度だけ更新するために setTimeout を使用
-    setTimeout(() => {
-      setExtractedFields(fields);
-      setIsExtracting(false);
-    }, 0);
-    
+
+ // 状態更新は完全に削除（手動で追加する方式）
+
   } catch (error) {
     console.error('JSON解析エラー:', error);
   }
