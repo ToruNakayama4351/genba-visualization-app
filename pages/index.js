@@ -66,35 +66,32 @@ export default function ChartGeneratorApp() {
   };
 
 const extractFieldsFromJson = (jsonString) => {
-  // 一時的に処理を停止
   console.log('JSON処理を開始:', jsonString);
   
-  // ガード句を追加
   if (!jsonString || jsonString.trim() === '') {
-    setExtractedFields([]);
-    setIsExtracting(false);
+    // setExtractedFields([]);  // コメントアウト
+    // setIsExtracting(false);  // コメントアウト
     return;
   }
   
-  setIsExtracting(true);
+  // setIsExtracting(true);  // コメントアウト
   
   try {
     const parsed = JSON.parse(jsonString);
     console.log('JSON解析成功:', parsed);
     
-    // 一時的に簡単な処理のみ
     const fields = [
       { id: 'test1', name: 'テスト項目1', type: 'string' },
       { id: 'test2', name: 'テスト項目2', type: 'number' }
     ];
     
-    setExtractedFields(fields);
-    setIsExtracting(false);
+    // setExtractedFields(fields);  // コメントアウト
+    // setIsExtracting(false);      // コメントアウト
     
   } catch (error) {
     console.error('JSON解析エラー:', error);
-    setExtractedFields([]);
-    setIsExtracting(false);
+    // setExtractedFields([]);  // コメントアウト
+    // setIsExtracting(false);  // コメントアウト
   }
 };
         
@@ -153,70 +150,12 @@ const extractFieldsFromJson = (jsonString) => {
     );
   };
 
-  // 提案テンプレート適用
-  const applyTemplate = (templateKey) => {
-    const template = proposalTemplates[templateKey];
-    const matchedFields = extractedFields.filter(field => 
-      template.preferredFields.some(keyword => 
-        field.name.toLowerCase().includes(keyword.toLowerCase())
-      )
-    );
-    
-    let selectedFieldIds = [];
-    
-    if (matchedFields.length > 0) {
-      // X軸用の日付項目を探す
-      const dateField = extractedFields.find(field => 
-        field.type === 'date' || 
-        field.name.toLowerCase().includes('日') ||
-        field.name.toLowerCase().includes('date') ||
-        field.name.toLowerCase().includes('time')
-      );
-      
-      if (dateField && !matchedFields.includes(dateField)) {
-        // 日付項目をX軸として最初に追加
-        selectedFieldIds = [dateField.id, ...matchedFields.map(f => f.id)];
-      } else if (dateField) {
-        // 日付項目が既にマッチしている場合、それを最初に
-        const otherFields = matchedFields.filter(f => f.id !== dateField.id);
-        selectedFieldIds = [dateField.id, ...otherFields.map(f => f.id)];
-      } else {
-        // 日付項目がない場合、ダミー日付項目を作成
-        const dummyDateField = {
-          id: 'dummy_date',
-          name: '作業日（サンプル）',
-          type: 'date'
-        };
-        setExtractedFields(prev => [dummyDateField, ...prev]);
-        selectedFieldIds = [dummyDateField.id, ...matchedFields.map(f => f.id)];
-      }
-      
-      setSelectedFields(selectedFieldIds);
-      setChartType(template.chartType);
-      setMemo(template.memo);
-    } else {
-      // マッチする項目がない場合、ダミー項目を作成
-      const dummyDateField = {
-        id: 'dummy_date',
-        name: '作業日（サンプル）',
-        type: 'date'
-      };
-      
-      const dummyFields = template.preferredFields.slice(0, 3).map((name, index) => ({
-        id: 'dummy_' + name.toLowerCase().replace(/[^a-zA-Z0-9]/g, '_'),
-        name: name + '（サンプル）',
-        type: 'number'
-      }));
-      
-      const allDummyFields = [dummyDateField, ...dummyFields];
-      setExtractedFields(prev => [...prev, ...allDummyFields]);
-      setSelectedFields(allDummyFields.map(f => f.id));
-      setChartType(template.chartType);
-      setMemo(template.memo);
-    }
-    
-    setShowPreview(true);
-  };
+ // 提案テンプレート適用
+const applyTemplate = (templateKey) => {
+  console.log('テンプレート適用:', templateKey);
+  // 一時的に無効化
+  return;
+};
 
   // チャート画像生成（パターン保存用）
   const generateChartImageForSave = async () => {
