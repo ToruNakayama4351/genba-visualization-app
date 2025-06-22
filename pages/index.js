@@ -905,25 +905,17 @@ export default function ChartGeneratorApp() {
           </p>
           
           {/* ナビゲーション */}
-          <div className="flex justify-center gap-4 mt-6">
+<div className="flex justify-center gap-4 mt-6">
             <button
               onClick={() => setCurrentView('home')}
-              className={`flex items-center px-6 py-3 rounded-lg transition-colors ${
-                currentView === 'home' 
-                  ? 'bg-blue-600 text-white' 
-                  : 'bg-white text-gray-900 hover:bg-gray-50'
-              }`}
+              className={`nav-button ${currentView === 'home' ? 'active' : ''}`}
             >
               <Home className="h-5 w-5 mr-2" />
               ホーム
             </button>
             <button
               onClick={() => setCurrentView('history')}
-              className={`flex items-center px-6 py-3 rounded-lg transition-colors ${
-                currentView === 'history' 
-                  ? 'bg-blue-600 text-white' 
-                  : 'bg-white text-gray-900 hover:bg-gray-50'
-              }`}
+              className={`nav-button ${currentView === 'history' ? 'active' : ''}`}
             >
               <History className="h-5 w-5 mr-2" />
               プロジェクト履歴
@@ -936,7 +928,7 @@ export default function ChartGeneratorApp() {
           <div className="space-y-8">
             {/* プロジェクト管理エリア */}
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex items-center justify-between mb-4">
+              <div className="project-header">
                 <h2 className="text-xl font-semibold flex items-center">
                   <Folder className="mr-2" />
                   <span className="text-gray-900">プロジェクト管理</span>
@@ -967,7 +959,7 @@ export default function ChartGeneratorApp() {
 
             {/* JSONデータ取り込み */}
             <div className="max-w-2xl mx-auto">
-              <div className="bg-white rounded-xl shadow-lg p-8">
+              <div className="bg-white rounded-xl shadow-lg p-8 json-file-section">
                 <h2 className="text-xl font-semibold mb-6 flex items-center justify-center">
                   <FileJson className="mr-2" />
                   JSONデータ取り込み
