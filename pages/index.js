@@ -98,55 +98,6 @@ const extractFieldsFromJson = (jsonString) => {
   }
 };
         
-        // tablesからカラム項目を抽出
-        if (parsed.format.tables) {
-          parsed.format.tables.forEach(table => {
-            if (table.columns) {
-              table.columns.forEach(column => {
-                if (column.name && column.dataType) {
-                  let type = inferDataType(column.name, column.dataType);
-                  
-                  fields.push({
-                    id: column.columnID || column.name.replace(/[^a-zA-Z0-9]/g, '_'),
-                    name: column.name,
-                    type: type
-                  });
-                }
-              });
-            }
-          });
-        }
-      } else {
-        // 通常のJSON形式の場合
-        const extractFields = (obj, prefix = '') => {
-          Object.keys(obj).forEach(key => {
-            const fullKey = prefix ? prefix + '.' + key : key;
-            const value = obj[key];
-            
-            if (value && typeof value === 'object' && !Array.isArray(value)) {
-              extractFields(value, fullKey);
-            } else {
-              let type = inferDataType(key, typeof value === 'number' ? 'number' : 'string');
-              
-              fields.push({
-                id: fullKey.replace(/[^a-zA-Z0-9]/g, '_'),
-                name: key.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').trim(),
-                type: type
-              });
-            }
-          });
-        };
-        
-        extractFields(parsed);
-      }
-      
-      setExtractedFields(fields);
-      setIsExtracting(false);
-    } catch (error) {
-      console.error('JSON解析エラー:', error);
-      setIsExtracting(false);
-    }
-  };
 
   // データ型推定の強化
   const inferDataType = (fieldName, originalType) => {
