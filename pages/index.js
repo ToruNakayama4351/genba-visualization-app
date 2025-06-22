@@ -127,19 +127,6 @@ const extractFieldsFromJson = (jsonString) => {
     }
   };
 
-const handleJsonTextChange = (value) => {
-  setJsonData(value);
-  // 空の場合は項目をクリア
-  if (!value.trim()) {
-    setExtractedFields([]);
-    return;
-  }
-  // 処理を遅延
-  setTimeout(() => {
-    extractFieldsFromJson(value);
-  }, 300);
-};
-
   const addCustomField = () => {
     if (newField.name.trim()) {
       const field = {
