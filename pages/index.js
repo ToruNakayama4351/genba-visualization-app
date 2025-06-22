@@ -987,11 +987,21 @@ const handleJsonTextChange = (value) => {
                   </button>
                   <div className="text-center text-gray-800 text-sm">または</div>
                   <textarea
-                    value={jsonData}
-                    onChange={(e) => handleJsonTextChange(e.target.value)}
-                    className="w-full h-40 p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="JSONデータを直接入力してください..."
-                  />
+  value={jsonData}
+  onChange={(e) => setJsonData(e.target.value)}
+  className="w-full h-40 p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+  placeholder="JSONデータを直接入力してください..."
+/>
+                                            <button
+  onClick={() => {
+    if (jsonData.trim()) {
+      extractFieldsFromJson(jsonData);
+    }
+  }}
+  className="mt-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+>
+  JSONを解析
+</button>
                 </div>
                 <input
                   ref={jsonInputRef}
