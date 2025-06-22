@@ -84,29 +84,7 @@ const extractFieldsFromJson = (jsonString) => {
   } catch (error) {
     console.error('JSON解析エラー:', error);  // これも有効にする
   }
-};
-  
-  // setIsExtracting(true);  // コメントアウト
-  
-  try {
-    const parsed = JSON.parse(jsonString);
-    console.log('JSON解析成功:', parsed);
-    
-    const fields = [
-      { id: 'test1', name: 'テスト項目1', type: 'string' },
-      { id: 'test2', name: 'テスト項目2', type: 'number' }
-    ];
-    
-    // setExtractedFields(fields);  // コメントアウト
-    // setIsExtracting(false);      // コメントアウト
-    
-  } catch (error) {
-    console.error('JSON解析エラー:', error);
-    // setExtractedFields([]);  // コメントアウト
-    // setIsExtracting(false);  // コメントアウト
-  }
-};
-        
+};      
 
   // データ型推定の強化
   const inferDataType = (fieldName, originalType) => {
