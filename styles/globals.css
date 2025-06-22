@@ -85,14 +85,14 @@ button:disabled {
 /* ナビゲーションボタン特別スタイル */
 .nav-button {
   background: white;
-  color: #374151;
+  color: #1f2937;
   border: 1px solid #e5e7eb;
-  padding: 8px 16px;
+  padding: 4px 12px;
   margin: 0;
   font-weight: 500;
   transition: all 0.2s ease;
   border-radius: 8px;
-  height: 40px;
+  height: 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -144,7 +144,32 @@ h3 {
   color: #1f2937;
   font-weight: 600;
 }
-/* プロジェクト項目 */
+/* プロジェクト管理セクション */
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.project-header h2 {
+  margin-bottom: 0;
+  color: #1f2937;
+}
+
+.btn-start-project {
+  margin-left: 0;
+}
+
+/* JSONファイル選択ボタンの中央寄せ */
+.json-file-section {
+  text-align: center;
+}
+
+.json-file-section .file-input-label {
+  display: inline-flex;
+  margin: 0 auto;
+}
 .project-item {
   display: flex;
   justify-content: space-between;
