@@ -967,7 +967,7 @@ export default function ChartGeneratorApp() {
                 <div className="space-y-4">
                   <button
                     onClick={() => jsonInputRef.current?.click()}
-                    className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
+                    className="file-input-label w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
                   >
                     <Upload className="h-5 w-5 mr-2" />
                     JSONファイルを選択
