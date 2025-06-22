@@ -85,21 +85,22 @@ button:disabled {
 /* ナビゲーションボタン特別スタイル */
 .nav-button {
   background: white;
-  color: #6b7280;
+  color: #374151;
   border: 1px solid #e5e7eb;
-  padding: 12px 24px;
+  padding: 8px 16px;
   margin: 0;
   font-weight: 500;
   transition: all 0.2s ease;
   border-radius: 8px;
-  height: 48px;
+  height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  font-size: 14px;
 }
 .nav-button:hover {
   background: #f3f4f6;
-  color: #374151;
+  color: #1f2937;
   border-color: #d1d5db;
 }
 .nav-button.active {
