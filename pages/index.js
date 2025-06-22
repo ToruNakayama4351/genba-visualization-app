@@ -586,51 +586,11 @@ const extractFieldsFromJson = (jsonString) => {
   };
 
   // ダミーデータ生成（useMemoで最適化）
-  const dummyData = useMemo(() => {
-    const data = [];
-    for (let i = 0; i < 30; i++) {
-      const row = {};
-      extractedFields.forEach(field => {
-        switch (field.type) {
-          case 'date':
-            row[field.id] = '2024-' + String(Math.floor(i/30) + 1).padStart(2, '0') + '-' + String((i % 30) + 1).padStart(2, '0');
-            break;
-          case 'number':
-            if (field.name.includes('温度')) {
-              row[field.id] = Math.floor(Math.random() * 10) + 20;
-            } else if (field.name.includes('湿度')) {
-              row[field.id] = Math.floor(Math.random() * 20) + 40;
-            } else if (field.name.includes('生産')) {
-              row[field.id] = Math.floor(Math.random() * 50) + 100;
-            } else if (field.name.includes('不良')) {
-              row[field.id] = Math.floor(Math.random() * 10);
-            } else if (field.name.includes('SPM')) {
-              row[field.id] = Math.floor(Math.random() * 50) + 100;
-            } else if (field.name.includes('ショット')) {
-              row[field.id] = Math.floor(Math.random() * 1000) + 5000;
-            } else {
-              row[field.id] = Math.floor(Math.random() * 100);
-            }
-            break;
-          case 'string':
-            if (field.name.includes('作業者') || field.name.includes('worker')) {
-              const workers = ['田中', '佐藤', '鈴木', '高橋', '渡邊'];
-              row[field.id] = workers[Math.floor(Math.random() * workers.length)];
-            } else if (field.name.includes('機械') || field.name.includes('machine')) {
-              row[field.id] = 'M' + String(Math.floor(Math.random() * 5) + 1).padStart(3, '0');
-            } else {
-              row[field.id] = 'データ' + (i + 1);
-            }
-            break;
-          default:
-            row[field.id] = '値' + (i + 1);
-        }
-      });
-      data.push(row);
-    }
-    return data;
-  }, [extractedFields]);
-
+const dummyData = [
+  { test1: 'サンプル1', test2: 100 },
+  { test1: 'サンプル2', test2: 200 },
+  { test1: 'サンプル3', test2: 300 }
+];
   const renderChart = () => {
     if (selectedFields.length === 0) return null;
 
