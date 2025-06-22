@@ -592,6 +592,10 @@ const dummyData = [
   { test1: 'サンプル3', test2: 300 }
 ];
   const renderChart = () => {
+      // 一時的に無効化
+  return <div className="p-8 text-center">チャート機能は準備中です</div>;
+  
+  // 以下は既存のコード（一時的にコメントアウト状態）
     if (selectedFields.length === 0) return null;
 
     const colors = ['#8884d8', '#82ca9d', '#ffc658', '#ff7c7c', '#8dd1e1'];
