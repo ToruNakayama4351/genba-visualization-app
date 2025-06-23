@@ -286,8 +286,6 @@ function showPreview() {
 }
 
 // チャート描画
-// グローバル変数として追加（ファイルの最初の方、15行目あたりのstate定義の後）
-let currentChart = null;
 
 // renderChart関数を置き換え
 function renderChart() {
