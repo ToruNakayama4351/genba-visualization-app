@@ -1,4 +1,6 @@
 // グローバル変数
+let currentChart = null;
+
 let state = {
   jsonData: '',
   extractedFields: [],
