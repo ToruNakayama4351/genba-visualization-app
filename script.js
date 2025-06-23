@@ -22,31 +22,6 @@ let state = {
   selectedProject: null
 };
 
-// 提案テンプレート定義
-const proposalTemplates = {
-  quality: {
-    name: '品質管理ダッシュボード',
-    description: '不良率、品質スコア、検査結果の分析',
-    preferredFields: ['不良', '品質', '検査', '良品', 'スコア', '判定'],
-    chartType: 'composed',
-    memo: '品質管理の可視化により、不良品の早期発見と品質向上を実現できます。\n• 不良率の推移監視\n• 品質基準値との比較\n• 検査結果のトレンド分析'
-  },
-  production: {
-    name: '生産効率分析',
-    description: '生産数、稼働率、作業時間の最適化',
-    preferredFields: ['生産', '稼働', '作業時間', '効率', '数量', 'SPM'],
-    chartType: 'bar',
-    memo: '生産効率の見える化により、ボトルネックの特定と改善が可能です。\n• 生産数の日次推移\n• 設備稼働率の監視\n• 作業時間の最適化'
-  },
-  maintenance: {
-    name: '設備保全レポート',
-    description: '温度、振動、稼働時間の監視',
-    preferredFields: ['温度', '湿度', 'ショット', '累計', '稼働', '点検'],
-    chartType: 'line',
-    memo: '予防保全により設備の長寿命化とダウンタイム削減を実現します。\n• 設備状態の常時監視\n• 保全タイミングの最適化\n• 異常予兆の早期検知'
-  }
-};
-
 // 初期化
 document.addEventListener('DOMContentLoaded', function() {
   // Lucideアイコンの初期化
