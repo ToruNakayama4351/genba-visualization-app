@@ -799,9 +799,9 @@ function updateFieldsList() {
   
   // イベントリスナー追加
   container.querySelectorAll('.field-checkbox').forEach(checkbox => {
-    checkbox.addEventListener('change', (e) => {
-      handleFieldToggle(e.target.dataset.fieldId);
-    });
+checkbox.addEventListener('change', function(e) {
+  handleFieldToggle(e.target.dataset.fieldId);
+});
   });
   
   container.querySelectorAll('.field-remove').forEach(btn => {
