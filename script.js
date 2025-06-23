@@ -235,19 +235,6 @@ function handleFieldToggle(fieldId) {
   }
   updateUI();
 }
-  
-  // チャートタイプとメモを設定
-  state.chartType = template.chartType;
-  state.memo = template.memo;
-  
-  // UIを更新
-  updateUI();
-  
-  // プレビューを表示
-  state.showPreview = true;
-  updateUI();
-  renderChart();
-}
 
 // プレビュー表示
 function showPreview() {
