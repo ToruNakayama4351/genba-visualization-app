@@ -269,11 +269,39 @@ function handleFieldToggle(fieldId) {
   updateUI();
 }
 
-// テンプレート適用（一時的に無効化）
 function applyTemplate(templateKey) {
-  console.log('テンプレート適用:', templateKey);
-  alert('テンプレート機能は準備中です');
-  return;
+  const template = proposalTemplates[templateKey];
+  if (!template) return;
+  
+  // マッチする項目を探す
+  const matchedFields = [];
+  state.extractedFields.forEach(field => {
+    template.preferredFields.forEach(keyword => {
+      if (field.name.includes(keyword)) {
+        matchedFields.push(field.id);
+      }
+    });
+  });
+  
+  // 項目を選択
+  if (matchedFields.length > 0) {
+    state.selectedFields = matchedFields.slice(0, 5); // 最大5個まで
+  } else {
+    alert(`「${template.name}」に適した項目が見つかりませんでした`);
+    return;
+  }
+  
+  // チャートタイプとメモを設定
+  state.chartType = template.chartType;
+  state.memo = template.memo;
+  
+  // UIを更新
+  updateUI();
+  
+  // プレビューを表示
+  state.showPreview = true;
+  updateUI();
+  renderChart();
 }
 
 // プレビュー表示
