@@ -188,6 +188,7 @@ if (parsed.format && parsed.format.boxes) {
       }
     });
   }
+}
     
     console.log('抽出された項目:', fields);
     
