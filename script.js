@@ -98,6 +98,7 @@ function setupEventListeners() {
   document.getElementById('previewBtn').addEventListener('click', showPreview);
   document.getElementById('savePatternBtn').addEventListener('click', saveCurrentPattern);
   document.getElementById('exportBtn').addEventListener('click', exportChartWithMemo);
+}
   
 // ビュー切り替え
 function switchView(view) {
