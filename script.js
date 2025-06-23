@@ -325,8 +325,21 @@ function renderChart() {
   // Chart.jsの設定
   const config = generateChartConfig(dummyData);
   
-  // チャートを描画
+// チャートを描画
+try {
+  console.log('Creating chart with config:', config);
+  console.log('Chart constructor:', typeof Chart);
+  
+  if (typeof Chart === 'undefined') {
+    throw new Error('Chart.js is not loaded');
+  }
+  
   currentChart = new Chart(ctx, config);
+  console.log('Chart created successfully');
+} catch (error) {
+  console.error('Chart creation error:', error);
+  container.innerHTML = '<div class="text-center p-8 text-red-600">グラフの作成に失敗しました: ' + error.message + '</div>';
+}
 }
 
 // ダミーデータ生成関数を追加
