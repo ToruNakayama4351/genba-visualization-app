@@ -182,17 +182,44 @@ function extractFieldsFromJson(jsonString) {
     
     const fields = [];
     
-    if (parsed.format && parsed.format.boxes) {
-      parsed.format.boxes.forEach(box => {
-        if (box.name && box.dataType) {
-          fields.push({
-            id: box.fieldID || box.name.replace(/[^a-zA-Z0-9]/g, '_'),
-            name: box.name,
-            type: box.dataType === 'string' ? 'string' : 'number'
-          });
-        }
+if (parsed.format && parsed.format.boxes) {
+  parsed.format.boxes.forEach(box => {
+    if (box.name && box.dataType) {
+      fields.push({
+        id: box.fieldID || box.name.replace(/[^a-zA-Z0-9]/g, '_'),
+        name: box.name,
+        type: box.dataType === 'string' ? 'string' : 'number'
       });
     }
+  });
+  
+  // tablesからカラム項目を抽出
+  if (parsed.format.tables) {
+    parsed.format.tables.forEach((table, tableIndex) => {
+      if (table.columns) {
+        table.columns.forEach(column => {
+          if (column.name && column.dataType) {
+            // データ型を適切に変換
+            let type = 'string';
+            if (column.dataType === 'float' || column.dataType === 'int') {
+              type = 'number';
+            } else if (column.dataType === 'date') {
+              type = 'date';
+            }
+            
+            fields.push({
+              id: column.columnID || column.name.replace(/[^a-zA-Z0-9]/g, '_'),
+              name: column.name,
+              type: type,
+              isTableColumn: true,  // テーブル項目であることを示すフラグ
+              tableIndex: tableIndex
+            });
+          }
+        });
+      }
+    });
+  }
+}
     
     console.log('抽出された項目:', fields);
     
