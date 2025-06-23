@@ -284,9 +284,12 @@ function showPreview() {
 }
 
 // チャート描画
+// グローバル変数として追加（ファイルの最初の方、15行目あたりのstate定義の後）
+let currentChart = null;
+
+// renderChart関数を置き換え
 function renderChart() {
   const container = document.getElementById('chartContainer');
-  container.innerHTML = '<div class="text-center p-8 text-gray-600">チャート機能は準備中です</div>';
   
   // タイトル更新
   const chartTypeNames = {
@@ -297,6 +300,204 @@ function renderChart() {
     table: '表'
   };
   document.getElementById('previewTitle').textContent = 'プレビュー - ' + chartTypeNames[state.chartType];
+  
+  // 既存のチャートがあれば破棄
+  if (currentChart) {
+    currentChart.destroy();
+    currentChart = null;
+  }
+  
+  // テーブルの場合は別処理
+  if (state.chartType === 'table') {
+    renderTable();
+    return;
+  }
+  
+  // キャンバス要素を作成
+  container.innerHTML = '<canvas id="myChart" style="max-height: 400px;"></canvas>';
+  const ctx = document.getElementById('myChart').getContext('2d');
+  
+  // ダミーデータを生成
+  const dummyData = generateDummyData();
+  
+  // Chart.jsの設定
+  const config = generateChartConfig(dummyData);
+  
+  // チャートを描画
+  currentChart = new Chart(ctx, config);
+}
+
+// ダミーデータ生成関数を追加
+function generateDummyData() {
+  const data = [];
+  const numPoints = 10;
+  
+  for (let i = 0; i < numPoints; i++) {
+    const row = {};
+    
+    state.selectedFields.forEach(fieldId => {
+      const field = state.extractedFields.find(f => f.id === fieldId);
+      if (!field) return;
+      
+      if (field.type === 'date') {
+        const date = new Date();
+        date.setDate(date.getDate() - (numPoints - i));
+        row[fieldId] = date.toLocaleDateString('ja-JP');
+      } else if (field.type === 'number') {
+        // フィールド名に基づいて適切な範囲のダミーデータを生成
+        if (field.name.includes('温度')) {
+          row[fieldId] = Math.floor(Math.random() * 10) + 20;
+        } else if (field.name.includes('湿度')) {
+          row[fieldId] = Math.floor(Math.random() * 20) + 40;
+        } else if (field.name.includes('ショット')) {
+          row[fieldId] = Math.floor(Math.random() * 1000) + 5000;
+        } else if (field.name.includes('累計')) {
+          row[fieldId] = (i + 1) * 5000 + Math.floor(Math.random() * 1000);
+        } else {
+          row[fieldId] = Math.floor(Math.random() * 100) + 50;
+        }
+      } else {
+        row[fieldId] = `データ${i + 1}`;
+      }
+    });
+    
+    data.push(row);
+  }
+  
+  return data;
+}
+
+// Chart.js設定生成関数を追加
+function generateChartConfig(data) {
+  const colors = [
+    'rgba(54, 162, 235, 0.8)',
+    'rgba(255, 99, 132, 0.8)',
+    'rgba(255, 206, 86, 0.8)',
+    'rgba(75, 192, 192, 0.8)',
+    'rgba(153, 102, 255, 0.8)'
+  ];
+  
+  // X軸のラベル（最初のフィールドを使用）
+  const labels = data.map(row => row[state.selectedFields[0]]);
+  
+  // データセットを生成
+  const datasets = [];
+  state.selectedFields.slice(1).forEach((fieldId, index) => {
+    const field = state.extractedFields.find(f => f.id === fieldId);
+    if (!field || field.type !== 'number') return;
+    
+    const dataset = {
+      label: field.name,
+      data: data.map(row => row[fieldId]),
+      backgroundColor: colors[index % colors.length],
+      borderColor: colors[index % colors.length].replace('0.8', '1'),
+      borderWidth: 2
+    };
+    
+    // 折れ線グラフの場合
+    if (state.chartType === 'line') {
+      dataset.fill = false;
+      dataset.tension = 0.1;
+    }
+    
+    // 複合グラフの場合（交互に棒と線）
+    if (state.chartType === 'composed') {
+      if (index % 2 === 0) {
+        dataset.type = 'bar';
+      } else {
+        dataset.type = 'line';
+        dataset.fill = false;
+      }
+    }
+    
+    datasets.push(dataset);
+  });
+  
+  // 円グラフの特別処理
+  if (state.chartType === 'pie') {
+    const pieData = {};
+    const stringField = state.selectedFields.find(fieldId => {
+      const field = state.extractedFields.find(f => f.id === fieldId);
+      return field && field.type === 'string';
+    });
+    
+    if (stringField) {
+      data.forEach(row => {
+        const key = row[stringField];
+        pieData[key] = (pieData[key] || 0) + 1;
+      });
+      
+      return {
+        type: 'pie',
+        data: {
+          labels: Object.keys(pieData),
+          datasets: [{
+            data: Object.values(pieData),
+            backgroundColor: colors
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      };
+    }
+  }
+  
+  // 通常のグラフ設定
+  return {
+    type: state.chartType === 'composed' ? 'bar' : state.chartType,
+    data: {
+      labels: labels,
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      },
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: false
+        }
+      }
+    }
+  };
+}
+
+// テーブル描画関数を追加
+function renderTable() {
+  const container = document.getElementById('chartContainer');
+  const data = generateDummyData();
+  
+  let html = '<div class="overflow-x-auto"><table class="min-w-full border-collapse border border-gray-300"><thead><tr class="bg-gray-50">';
+  
+  // ヘッダー
+  state.selectedFields.forEach(fieldId => {
+    const field = state.extractedFields.find(f => f.id === fieldId);
+    if (field) {
+      html += `<th class="border border-gray-300 px-4 py-2 text-left font-medium">${field.name}</th>`;
+    }
+  });
+  html += '</tr></thead><tbody>';
+  
+  // データ行
+  data.forEach((row, index) => {
+    html += `<tr class="${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">`;
+    state.selectedFields.forEach(fieldId => {
+      html += `<td class="border border-gray-300 px-4 py-2">${row[fieldId]}</td>`;
+    });
+    html += '</tr>';
+  });
+  
+  html += '</tbody></table></div>';
+  container.innerHTML = html;
 }
 
 // パターン保存
