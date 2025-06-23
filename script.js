@@ -99,15 +99,6 @@ function setupEventListeners() {
   document.getElementById('savePatternBtn').addEventListener('click', saveCurrentPattern);
   document.getElementById('exportBtn').addEventListener('click', exportChartWithMemo);
   
-  // テンプレートボタン
-  document.querySelectorAll('.template-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const template = e.currentTarget.dataset.template;
-      applyTemplate(template);
-    });
-  });
-}
-
 // ビュー切り替え
 function switchView(view) {
   state.currentView = view;
@@ -243,28 +234,6 @@ function handleFieldToggle(fieldId) {
   }
   updateUI();
 }
-
-function applyTemplate(templateKey) {
-  const template = proposalTemplates[templateKey];
-  if (!template) return;
-  
-  // マッチする項目を探す
-  const matchedFields = [];
-  state.extractedFields.forEach(field => {
-    template.preferredFields.forEach(keyword => {
-      if (field.name.includes(keyword)) {
-        matchedFields.push(field.id);
-      }
-    });
-  });
-  
-  // 項目を選択
-  if (matchedFields.length > 0) {
-    state.selectedFields = matchedFields.slice(0, 5); // 最大5個まで
-  } else {
-    alert(`「${template.name}」に適した項目が見つかりませんでした`);
-    return;
-  }
   
   // チャートタイプとメモを設定
   state.chartType = template.chartType;
@@ -766,14 +735,12 @@ function updateUI() {
   // JSONテキストエリア
   document.getElementById('jsonTextarea').value = state.jsonData;
   
-  // テンプレートセクション
-  if (state.extractedFields.length > 0) {
-    document.getElementById('templateSection').classList.remove('hidden');
-    document.getElementById('fieldsSection').classList.remove('hidden');
-  } else {
-    document.getElementById('templateSection').classList.add('hidden');
-    document.getElementById('fieldsSection').classList.add('hidden');
-  }
+// フィールドセクション
+if (state.extractedFields.length > 0) {
+  document.getElementById('fieldsSection').classList.remove('hidden');
+} else {
+  document.getElementById('fieldsSection').classList.add('hidden');
+}
   
   // フィールドリスト
   updateFieldsList();
